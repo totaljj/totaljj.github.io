@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5001:5000" # Map host port 5001 to container port 5000
+    volumes:
+      - .:/app # Mount current directory to /app in container for development
+    environment:
+      - FLASK_ENV=development # Set Flask environment to development
+      - DATABASE_URL=mysql+mysqlclient://myapp_user:myapp_password@db/myapp_db
+      - SECRET_KEY=your_super_secret_key_here # Override this!
+    depends_on:
+      - db
+    command: ["flask", "db", "upgrade", "&&", "flask", "run"] # Run migrations then run app
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "3307:3306" # Map host port 3307 to container port 3306 for external access if needed
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password # Change this!
+      MYSQL_DATABASE: myapp_db
+      MYSQL_USER: myapp_user
+      MYSQL_PASSWORD: myapp_password # Change this!
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

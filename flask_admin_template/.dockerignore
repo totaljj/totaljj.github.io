@@ -1,0 +1,14 @@
+venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env
+.env
+.git
+.gitignore
+.dockerignore
+migrations/versions/* # Keep migrations folder, but ignore specific version files if not needed in image
+*.db # SQLite databases
+instance/
